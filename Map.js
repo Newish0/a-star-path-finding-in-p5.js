@@ -95,10 +95,9 @@ class Map {
 
             while (curNode != this.startNode) {
                 this.bestPath.push(curNode);
-                console.log(curNode);
                 curNode = curNode.parent;
             }
-
+            console.debug("Best path:", this.bestPath);
 
             return;
 
