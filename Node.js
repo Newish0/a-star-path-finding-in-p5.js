@@ -3,6 +3,7 @@ class Node {
       this.x = x;
       this.y = y;
       this.type = type;
+      this.parent = null;
   
       let { startNode, endNode } = nodeMap;
   
@@ -13,8 +14,8 @@ class Node {
       }
     }
   
-    setAsPathNode() {
-      this.isPathNode = true;
+    setAsClosedNode() {
+      this.isClosedNode = true;
     }
   }
   

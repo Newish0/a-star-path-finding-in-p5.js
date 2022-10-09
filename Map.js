@@ -21,9 +21,17 @@ class Map {
 
     aStarInit() {
         if (this.startNode && this.endNode) {
-            this.queue = this.getNeighborCoords(this.startNode);
+            const listOfNeighborCoords = this.getNeighborCoords(this.startNode);
+
+            for (const neighborCoord of listOfNeighborCoords) {
+                neighborCoord.parent = this.startNode;
+            }
+
+            this.queue = listOfNeighborCoords;
             this.activeNodes = [];
-            this.pathNodes = [];
+            this.closedNodes = [];
+            this.bestPath = [];
+            this.found = false;
             this.pause = false;
             return true;
         }
@@ -52,28 +60,46 @@ class Map {
             console.debug("Lowest f-cost node:", lowestFCostNode);
 
             // Unsolvable!
-            if(!lowestFCostNode) {
+            if (!lowestFCostNode) {
                 this.pause = true;
             }
 
 
-            if (!this.pathNodes.includes(lowestFCostNode)) {
-                this.queue = this.getNeighborCoords(lowestFCostNode);
-                console.log(this.getNeighborCoords(lowestFCostNode))
-                this.pathNodes.push(lowestFCostNode);
-                lowestFCostNode.setAsPathNode();
+            if (!this.closedNodes.includes(lowestFCostNode)) {
+                const listOfNeighborCoords = this.getNeighborCoords(lowestFCostNode);
+
+                for (const neighborCoord of listOfNeighborCoords) {
+                    neighborCoord.parent = lowestFCostNode;
+                }
+
+                this.queue = listOfNeighborCoords;
+                this.closedNodes.push(lowestFCostNode);
+                lowestFCostNode.setAsClosedNode();
                 this.activeNodes.splice(this.activeNodes.indexOf(lowestFCostNode), 1);
             }
 
             return;
         }
 
-        const { x, y } = curCoord;
+        const { x, y, parent } = curCoord;
         console.debug("Current coordinate being worked on:", curCoord);
 
         if (this.coordIsEnd(x, y)) {
+            this.found = true;
             this.pause = true;
             this.lastViewedNode = this.endNode;
+
+            // Retrace to startNode for best path.
+            this.bestPath = [];
+            let curNode = this.closedNodes.at(-1);
+
+            while (curNode != this.startNode) {
+                this.bestPath.push(curNode);
+                console.log(curNode);
+                curNode = curNode.parent;
+            }
+
+
             return;
 
             // Will also count wall node as "exist", hence ignore.
@@ -82,6 +108,7 @@ class Map {
         }
 
         const curNode = this.setNewNode(x, y);
+        curNode.parent = parent;
         this.activeNodes.push(curNode);
 
         this.lastViewedNode = curNode;
@@ -250,8 +277,10 @@ class Map {
                     }
 
                     // Draw aqua color if node is part of the path.
-                    if (this.nodeMap[i][j].isPathNode) {
+                    if (this.found && this.bestPath.includes(this.nodeMap[i][j])) {
                         fill(100, 255, 255);
+                    } else if (this.nodeMap[i][j].isClosedNode) {
+                        fill(200, 200, 100);
                     } else {
                         fill(100, 200, 100);
                     }
