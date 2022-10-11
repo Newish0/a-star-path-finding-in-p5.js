@@ -1,14 +1,41 @@
-<!DOCTYPE html><html lang="en"><head>
-    <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
 
-  </head>
-  <body>
-    <main>
-    </main>
-    <script src="Map.js"></script>
-    <script src="Node.js"></script>
-    <script src="sketch.js" defer></script>
-</body></html>
+<head>
+  <script src="p5.js"></script>
+  <script src="p5.sound.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+
+</head>
+
+<body>
+  <main>
+  </main>
+
+
+  <div id="settings">
+    <div>
+      <label for="start-node">Start Node(x, y):</label>
+      <input type="text" id="start-node">
+    </div>
+    <div>
+      <label for="end-node">End Node(x, y):</label>
+      <input type="text" id="end-node">
+    </div>
+  </div>
+
+  <div id="controls">
+    <button id="play-pause">Play</button>
+    <div>
+      <label for="astar-cal-rate">Rate:</label>
+      <input type="range" min="1" max="100" value="3" id="astar-cal-rate">
+    </div>
+  </div>
+
+  <script src="Map.js"></script>
+  <script src="Node.js"></script>
+  <script src="sketch.js" defer></script>
+</body>
+
+</html>

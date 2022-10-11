@@ -19,6 +19,14 @@ class Map {
 
     }
 
+    pause() {
+        this.isPaused = true;
+    }
+
+    resume() {
+        this.isPaused = false;
+    }
+
     aStarInit() {
         if (this.startNode && this.endNode) {
             const listOfNeighborCoords = this.getNeighborCoords(this.startNode);
@@ -32,7 +40,7 @@ class Map {
             this.closedNodes = [];
             this.bestPath = [];
             this.found = false;
-            this.pause = false;
+            this.isPaused = false;
             return true;
         }
 
@@ -41,7 +49,7 @@ class Map {
 
     aStarOnce() {
 
-        if (this.pause) return;
+        if (this.isPaused) return;
 
         console.debug("Current queue:", this.queue);
 
@@ -61,7 +69,7 @@ class Map {
 
             // Unsolvable!
             if (!lowestFCostNode) {
-                this.pause = true;
+                this.isPaused = true;
             }
 
 
@@ -86,7 +94,7 @@ class Map {
 
         if (this.coordIsEnd(x, y)) {
             this.found = true;
-            this.pause = true;
+            this.isPaused = true;
             this.lastViewedNode = this.endNode;
 
             // Retrace to startNode for best path.
@@ -119,7 +127,7 @@ class Map {
 
     coordIsNode(x, y) {
 
-        if (this.nodeMap[y][x]) {
+        if (this.coordIsInMap(x, y) && this.nodeMap[y][x]) {
             return this.nodeMap[y][x];
         } else {
             return null;
@@ -245,7 +253,7 @@ class Map {
             for (let j = 0; j < this.nodeMap[i].length; j++) {
                 strokeWeight(1); // reset stroke weight
 
-                if (this.nodeMap[i][j] == this.lastViewedNode) {
+                if (this.lastViewedNode && this.nodeMap[i][j] == this.lastViewedNode) {
                     strokeWeight(4);
                 }
 
