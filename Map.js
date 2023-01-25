@@ -76,6 +76,10 @@ class Map {
             if (!this.closedNodes.includes(lowestFCostNode)) {
                 const listOfNeighborCoords = this.getNeighborCoords(lowestFCostNode);
 
+
+                if(!listOfNeighborCoords) return; // No solution from this node.
+
+
                 for (const neighborCoord of listOfNeighborCoords) {
                     neighborCoord.parent = lowestFCostNode;
                 }
