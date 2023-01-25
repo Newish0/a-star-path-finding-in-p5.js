@@ -35,9 +35,11 @@ function draw() {
 }
 
 function handleMouse() {
-  const cRect = canvas.getBoundingClientRect();
-  const cx = mouseX - cRect.x;
-  const cy = mouseY - cRect.y;
+  // const cRect = canvas.getBoundingClientRect();
+  // const cx = mouseX - cRect.x;
+  // const cy = mouseY - cRect.y;
+  const cx = mouseX;
+  const cy = mouseY;
   const { mx, my } = nodeMap.clientCoordToMapCoord(cx, cy);
 
   if (!nodeMap.coordIsInMap(mx, my)) {
